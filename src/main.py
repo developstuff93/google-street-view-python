@@ -2,7 +2,7 @@ import csv
 import time
 from get_street_view_data import extract_street_view_metadata
 from metadata_processor import metadata_processor
-from constants import SRC_FILE_URL, DES_FILE_URL
+from constants import SRC_FILE_URL, DES_FILE_URL, SLEEP_TIME
 from spreadsheet_processor import append_headings, get_street_head_positions, check_blank_row, get_full_address_from_heading_pos, error_row
 
 
@@ -13,7 +13,7 @@ csv_reader_object = csv.reader(src_file)
 csv_writer_object = csv.writer(des_file)
 
 print(f"\nReading data from {SRC_FILE_URL}...\n")
-time.sleep(1)
+time.sleep(SLEEP_TIME)
 
 # get head itemšs
 header = next(csv_reader_object)
@@ -26,7 +26,7 @@ cnt = 0
 
 print("\n\n--------------------------------------------------")
 print("Data Processing\n")
-time.sleep(1)
+time.sleep(SLEEP_TIME)
 
 for row in csv_reader_object:
     print("--------------------------------------------------")

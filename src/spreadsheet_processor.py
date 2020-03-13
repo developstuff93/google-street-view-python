@@ -1,7 +1,6 @@
 import os
 import time
-from constants import APPEND_HEADERS, ADDRESS_INF_HEADERS
-
+from constants import APPEND_HEADERS, ADDRESS_INF_HEADERS, SLEEP_TIME
 
 def check_blank_row(row, cnt, status_pos, writer, address_pos):
     # checking blank row
@@ -16,7 +15,7 @@ def check_blank_row(row, cnt, status_pos, writer, address_pos):
             f"Incomplete Address, Please check again {cnt + 1} th row in the origin CSV data...\n\n\n")
         row.insert(status_pos, 'ERROR')
         writer.writerow(row)
-        time.sleep(1)
+        time.sleep(SLEEP_TIME)
 
     return is_blank_row
 
@@ -38,11 +37,11 @@ def get_street_head_positions(header):
 
     print("--------------------------------------------------")
     print("Checking Address Information Headings...\n")
-    time.sleep(1)
+    time.sleep(SLEEP_TIME)
 
     for idx, head_item in enumerate(ADDRESS_INF_HEADERS):
         print(f"No {idx + 1}: checking '{head_item}'")
-        time.sleep(1)
+        time.sleep(SLEEP_TIME)
 
         pos = idx + 1
         try:
@@ -61,12 +60,12 @@ def get_street_head_positions(header):
 def append_headings(header, writer):
     print("--------------------------------------------------")
     print("Appending Header Columns to the origin\n")
-    time.sleep(1)
+    time.sleep(SLEEP_TIME)
 
     for head_item in APPEND_HEADERS:
         if head_item not in header:
             print(f"appending '{head_item}'")
-            time.sleep(1)
+            time.sleep(SLEEP_TIME)
             header.append(head_item)
     writer.writerow(header)
 
