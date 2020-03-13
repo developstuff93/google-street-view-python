@@ -51,5 +51,8 @@ def get_lat_and_long(geocoding_res):
 def get_geocoding_data(address_or_zipcode):
     api_key = GEOCODE_API_KEY
     endpoint = f"{GEOCODE_API_URL}?address={address_or_zipcode}&key={api_key}"
-    geocoding_res = requests.get(endpoint)
-    return geocoding_res.json()
+    try:
+        geocoding_res = requests.get(endpoint)
+        return geocoding_res.json()
+    except:
+        return None
