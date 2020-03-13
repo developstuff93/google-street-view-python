@@ -9,6 +9,9 @@ def success(address):
 
 def not_found(address):
     geo_data = get_geocoding_data(address)
+    if geo_data == None:
+        return None
+
     address_data = get_formatted_address(geo_data)
     got_corrected_address = address_data[0]
     if got_corrected_address == True:
@@ -16,6 +19,9 @@ def not_found(address):
         corrected_address = address_data[1]
         print(corrected_address)
         metadata = extract_street_view_metadata(corrected_address)
+        if metadata == None:
+            return None
+
         status = metadata['status']
         return metadata_processor(corrected_address, status)
     else:
@@ -25,6 +31,9 @@ def not_found(address):
 
 def zero_results(address):
     geo_data = get_geocoding_data(address)
+    if geo_data == None:
+        return None
+
     lat_lng_value = get_lat_and_long(geo_data)
     lat = lat_lng_value[0]
     lng = lat_lng_value[1]
@@ -34,6 +43,9 @@ def zero_results(address):
         return get_default_image()
 
     metadata = extract_street_view_metadata(lat_lng_value)
+    if metadata == None:
+        return None
+
     status = metadata['status']
 
     if status == 'OK':
