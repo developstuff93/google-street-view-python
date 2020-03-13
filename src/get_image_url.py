@@ -16,13 +16,19 @@ def download_image(src, desc):
         img_data = requests.get(src).content
         with open(desc, 'wb') as handler:
             handler.write(img_data)
+        return True
     except:
-        pass
+        print("error caused while image downloading...")
+        return False
 
 
 def get_image_url(address):
 
     geocode_res = get_geocoding_data(address)
+
+    if geocode_res == None:
+        return None
+
     if geocode_res['status'] != 'OK':
         return get_default_image()
 
@@ -39,7 +45,9 @@ def get_image_url(address):
 
     if file_existing == False:
         print("downloading image")
-        download_image(image_url, full_image_path)
+        download_res = download_image(image_url, full_image_path)
+        if download_res == False:
+            return None
     else:
         print("image existing")
     print("src: ", image_url)
