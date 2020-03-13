@@ -2,6 +2,7 @@ import os
 import time
 from constants import APPEND_HEADERS, ADDRESS_INF_HEADERS
 
+
 def check_blank_row(row, cnt, status_pos, writer, address_pos):
     # checking blank row
     is_blank_row = False
@@ -11,12 +12,14 @@ def check_blank_row(row, cnt, status_pos, writer, address_pos):
             break
 
     if is_blank_row == True:
-        print(f"Incomplete Address, Please check again {cnt + 1} th row in the origin CSV data...\n\n\n")
+        print(
+            f"Incomplete Address, Please check again {cnt + 1} th row in the origin CSV data...\n\n\n")
         row.insert(status_pos, 'ERROR')
         writer.writerow(row)
         time.sleep(1)
 
     return is_blank_row
+
 
 def get_full_address_from_heading_pos(row, address_pos):
     address = []
@@ -28,6 +31,7 @@ def get_full_address_from_heading_pos(row, address_pos):
     # full joined address
     full_address = ', '.join(address)
     return full_address
+
 
 def get_street_head_positions(header):
     positions = []
@@ -46,7 +50,7 @@ def get_street_head_positions(header):
             print(f"Column: {pos + 1}(1 based index)\n")
         except ValueError:
             print(
-                f"Error, Please check if there is {head_item} heading in the first line\n")
+                f"Error, Please check if there is {head_item} heading in the first row\n")
             pass
         positions.append(pos)
 
@@ -65,3 +69,9 @@ def append_headings(header, writer):
             time.sleep(1)
             header.append(head_item)
     writer.writerow(header)
+
+def error_row(row_cnt, data, status_pos, writer):
+    data[status_pos] = "ERROR"
+    print(
+        f"Error Cannot get addresses, Please check again {row_cnt + 1} th row in the origin CSV data...\n\n\n")
+    writer.writerow(data)
