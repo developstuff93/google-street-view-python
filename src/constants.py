@@ -30,3 +30,6 @@ DEFAULT_IMAGE_DIR = 'assets/default.png'
 ADDRESS_INF_HEADERS = ['Image Street',
                        'Image City', 'Image State', 'Image Zip']
 APPEND_HEADERS = ['Status', 'Location', 'URL']
+
+# Set Sleep Time for the visualization
+SLEEP_TIME = 0.5
