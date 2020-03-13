@@ -1,8 +1,9 @@
-import csv, time
+import csv
+import time
 from get_street_view_data import extract_street_view_metadata
 from metadata_processor import metadata_processor
 from constants import SRC_FILE_URL, DES_FILE_URL
-from spreadsheet_processor import append_headings, get_street_head_positions, check_blank_row, get_full_address_from_heading_pos
+from spreadsheet_processor import append_headings, get_street_head_positions, check_blank_row, get_full_address_from_heading_pos, error_row
 
 
 src_file = open(SRC_FILE_URL, newline=None)
@@ -34,7 +35,8 @@ for row in csv_reader_object:
     total_data = row
     cnt += 1
 
-    is_blank = check_blank_row(row, cnt, status_pos, csv_writer_object, address_pos)
+    is_blank = check_blank_row(
+        row, cnt, status_pos, csv_writer_object, address_pos)
     if is_blank == True:
         continue
 
@@ -43,23 +45,26 @@ for row in csv_reader_object:
 
     # get street view data
     street_view_data = extract_street_view_metadata(full_address)
+    if street_view_data == None:
+        error_row(cnt, total_data, status_pos, csv_writer_object)
+        continue
 
     # get status metadata
     status = street_view_data['status']
     total_data.append(status)
 
-
     # get image data
     image_data = metadata_processor(full_address, status)
+    if image_data == None:
+        error_row(cnt, total_data, status_pos, csv_writer_object)
+        continue
 
     print("\n" * 2)
     try:
         downloaded_url = image_data[0]
         google_img_url = image_data[1]
     except:
-        total_data[status_pos] = 'ERROR'
-        print(f"Error Cannot get addresses, Please check again {cnt + 1} th row in the origin CSV data...\n\n\n")
-        csv_writer_object.writerow(total_data)
+        error_row(cnt, total_data, status_pos, csv_writer_object)
         continue
 
     total_data.append(downloaded_url)
